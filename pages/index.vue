@@ -8,7 +8,8 @@ import scraper from '~/services/scraper';
 export default {
   name: 'HomePage',
   async mounted() {
-    await scraper.scrap();
+    const scraps = await scraper.scrap();
+    console.log(scraps);
   },
 };
 </script>

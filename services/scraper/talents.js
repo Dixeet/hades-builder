@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import $ from 'cheerio';
 import camelCase from 'lodash/camelCase';
-import getPage from './abstractScraper';
+import { getPage, removeLinkElement } from './abstractScraper';
 
 const URL = '/Mirror_of_Night';
 
@@ -21,13 +21,7 @@ async function parse() {
     const talent = {};
     if (i) {
       $('td', tr).each((j, td) => {
-        $(td)
-          .find('a')
-          .each((_, a) => {
-            a.tagName = 'span';
-            $(a).attr('href', null);
-            $(a).attr('title', null);
-          });
+        removeLinkElement(td);
         talent[attrs[j]] = $(td).html();
       });
       talents.push(talent);
