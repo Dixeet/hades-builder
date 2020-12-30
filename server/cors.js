@@ -7,8 +7,8 @@ export default function (req, res) {
   axios
     .get(req.url)
     .then((response) => {
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(response.data));
+      res.setHeader('Content-Type', 'text/html');
+      res.end(response.data);
     })
     .catch(() => {
       res.statusCode = 500;
