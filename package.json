@@ -32,5 +32,10 @@
     "eslint-plugin-nuxt": "^1.0.0",
     "eslint-plugin-prettier": "^3.1.4",
     "prettier": "^2.1.2"
+  },
+  "peerDependencies": {
+    "axios": "",
+    "vue": "^2.6.12",
+    "vuex": "^3.5.1"
   }
 }
