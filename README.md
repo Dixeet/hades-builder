@@ -1,5 +1,13 @@
 # hades-builder
 
+## Generate data
+`/generator` folder contains every files to generate the data. Data is generated from scrapping [Hades Wiki](https://hades.gamepedia.com/Hades_Wiki)
+
+To generate, inside `generator` folder:
+```bash
+node index.js
+```
+
 ## Build Setup
 
 ```bash
