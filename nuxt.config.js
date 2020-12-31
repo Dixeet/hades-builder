@@ -2,6 +2,9 @@ export default {
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
   ssr: false,
 
+  // Target (https://go.nuxtjs.dev/config-target)
+  target: 'static',
+
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: 'Hades Builder',
@@ -17,7 +20,7 @@ export default {
   css: [{ src: '~assets/css/main.scss', lang: 'scss' }],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: [],
+  plugins: ['~/plugins/data.js'],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,

@@ -5,5 +5,8 @@
 <script>
 export default {
   name: 'HomePage',
+  asyncData({ $data }) {
+    return {};
+  },
 };
 </script>
