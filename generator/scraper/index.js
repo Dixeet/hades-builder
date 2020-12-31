@@ -7,6 +7,10 @@ module.exports = {
     return Promise.all([aphroditeScraper.parse(), aresScraper.parse()]);
   },
 
+  scrapTalents() {
+    return talentsScraper.parse();
+  },
+
   async scrap() {
     const [talents, gods] = await Promise.all([talentsScraper.parse(), this.scrapGods()]);
     return {
