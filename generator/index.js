@@ -20,9 +20,10 @@ function serialize({ talents = [], gods = [], weapons = [] }) {
 (async function main() {
   const talents = await scraper.scrapTalents();
   const gods = await scraper.scrapGods();
-  await serialize({
+  const serObj = {
     talents,
     gods,
-  });
+  };
+  // await serialize(serObj);
   console.log('toto');
 })();

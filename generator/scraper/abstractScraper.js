@@ -69,9 +69,11 @@ async function parseGod(URL) {
       boons.push(boon);
     }
   });
+  const icon = $('ul.gallery > li:nth-child(2) img', page).attr('src');
   return {
     image,
     boons,
+    icon,
   };
 }
 
