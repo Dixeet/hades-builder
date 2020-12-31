@@ -77,8 +77,59 @@ async function parseGod(URL) {
   };
 }
 
+async function parseWeapon(URL) {
+  const page = await getPage(URL);
+  const image = $('div.floatright img', page).attr('src');
+  const aspectsAttrs = [];
+  const aspects = [];
+  $('table#aspects th', page).each((i, attr) => {
+    aspectsAttrs.push(camelCase($(attr).text()));
+  });
+  $('table#aspects > tbody > tr', page).each((i, tr) => {
+    const aspect = {};
+    if (i) {
+      $('> td', tr).each((j, td) => {
+        if (j) {
+          removeLinkElement(td);
+          aspect[aspectsAttrs[j]] = $(td).html();
+        } else {
+          aspect.image = $('img', td).attr('src');
+          aspect.name = $(td).text().replace('\n', '');
+        }
+      });
+      aspects.push(aspect);
+    }
+  });
+  const upgradesAttrs = [];
+  const upgrades = [];
+  $('table#hammers th', page).each((i, attr) => {
+    upgradesAttrs.push(camelCase($(attr).text()));
+  });
+  $('table#hammers > tbody > tr', page).each((i, tr) => {
+    const upgrade = {};
+    if (i) {
+      $('> td', tr).each((j, td) => {
+        if (j) {
+          removeLinkElement(td);
+          upgrade[upgradesAttrs[j]] = $(td).html();
+        } else {
+          upgrade.image = $('img', td).attr('src');
+          upgrade.name = $(td).text().replace('\n', '');
+        }
+      });
+      upgrades.push(upgrade);
+    }
+  });
+  return {
+    image,
+    aspects,
+    upgrades,
+  };
+}
+
 module.exports = {
   removeLinkElement,
   getPage,
   parseGod,
+  parseWeapon,
 };

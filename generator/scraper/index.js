@@ -9,6 +9,12 @@ const dionysusScraper = require('./gods/dionysus');
 const hermesScraper = require('./gods/hermes');
 const poseidonScraper = require('./gods/poseidon');
 const zeusScraper = require('./gods/zeus');
+const stygianBladeScraper = require('./weapons/stygianBlade');
+const adamantRailScraper = require('./weapons/adamantRail');
+const eternalSpearScraper = require('./weapons/eternalSpear');
+const heartSeekingBowScraper = require('./weapons/heartSeekingBow');
+const shieldOfChaosScraper = require('./weapons/shieldOfChaos');
+const twinFistsScraper = require('./weapons/twinFists');
 
 module.exports = {
   scrapGods() {
@@ -28,6 +34,17 @@ module.exports = {
 
   scrapTalents() {
     return talentsScraper.parse();
+  },
+
+  scrapWeapons() {
+    return Promise.all([
+      stygianBladeScraper.parse(),
+      adamantRailScraper.parse(),
+      eternalSpearScraper.parse(),
+      heartSeekingBowScraper.parse(),
+      shieldOfChaosScraper.parse(),
+      twinFistsScraper.parse(),
+    ]);
   },
 
   async scrap() {
