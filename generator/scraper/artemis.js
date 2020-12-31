@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { parseGod } from './abstractScraper';
+const { parseGod } = require('./abstractScraper');
 
 const URL = '/Artemis';
 
@@ -14,6 +14,6 @@ async function parse() {
   };
 }
 
-export default {
+module.exports = {
   parse,
 };

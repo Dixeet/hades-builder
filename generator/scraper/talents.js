@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
-import $ from 'cheerio';
-import camelCase from 'lodash/camelCase';
-import { getPage, removeLinkElement } from './abstractScraper';
+const $ = require('cheerio');
+const camelCase = require('lodash/camelCase');
+const { getPage, removeLinkElement } = require('./abstractScraper');
 
 const URL = '/Mirror_of_Night';
 
@@ -31,6 +31,6 @@ async function parse() {
   return talents;
 }
 
-export default {
+module.exports = {
   parse,
 };

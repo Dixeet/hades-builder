@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
-import axios from 'axios';
-import $ from 'cheerio';
-import camelCase from 'lodash/camelCase';
+const axios = require('axios');
+const $ = require('cheerio');
+const camelCase = require('lodash/camelCase');
 
-export function removeLinkElement(el) {
+function removeLinkElement(el) {
   $(el)
     .find('a')
     .each((_, a) => {
@@ -13,12 +13,12 @@ export function removeLinkElement(el) {
     });
 }
 
-export async function getPage(URL) {
-  const { data: page } = await axios.get(`/hades${URL}`);
+async function getPage(URL) {
+  const { data: page } = await axios.get(`https://hades.gamepedia.com${URL}`);
   return page;
 }
 
-export async function parseGod(URL) {
+async function parseGod(URL) {
   const page = await getPage(URL);
   const image = $('table.infobox-table td.infobox-centered img', page).attr('src');
   const boons = [];
@@ -74,3 +74,9 @@ export async function parseGod(URL) {
     boons,
   };
 }
+
+module.exports = {
+  removeLinkElement,
+  getPage,
+  parseGod,
+};

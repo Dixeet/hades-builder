@@ -1,8 +1,8 @@
-import talentsScraper from '~/services/scraper/talents';
-import aphroditeScraper from '~/services/scraper/aphrodite';
-import aresScraper from '~/services/scraper/ares';
+const talentsScraper = require('./talents');
+const aphroditeScraper = require('./aphrodite');
+const aresScraper = require('./ares');
 
-export default {
+module.exports = {
   scrapGods() {
     return Promise.all([aphroditeScraper.parse(), aresScraper.parse()]);
   },
