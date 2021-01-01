@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-const { parseGod } = require('../abstractScraper');
+const parseGod = require('./abstractGod');
 
 const URL = '/Athena';
 

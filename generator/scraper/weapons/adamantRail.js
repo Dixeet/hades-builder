@@ -1,4 +1,4 @@
-const { parseWeapon } = require('../abstractScraper');
+const parseWeapon = require('./abstractWeapon');
 
 const URL = '/Adamant_Rail';
 
