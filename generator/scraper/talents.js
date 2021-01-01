@@ -18,7 +18,9 @@ async function parse() {
     }
   });
   $('table.wikitable tr', page).each((i, tr) => {
-    const talent = {};
+    const talent = {
+      id: `t-${i}`,
+    };
     if (i) {
       $('td', tr).each((j, td) => {
         removeLinkElement(td);

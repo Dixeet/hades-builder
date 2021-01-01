@@ -2,6 +2,7 @@
 const axios = require('axios');
 const $ = require('cheerio');
 const camelCase = require('lodash/camelCase');
+const lowerCase = require('lodash/lowerCase');
 
 function removeLinkElement(el) {
   $(el)
@@ -22,8 +23,11 @@ async function parseGod(URL) {
   const page = await getPage(URL);
   const image = $('table.infobox-table td.infobox-centered img', page).attr('src');
   const boons = [];
+  const id = lowerCase(URL.substring(1, 4));
   $('table.wikitable.boonTableSB > tbody > tr', page).each((i, tr) => {
-    const boon = {};
+    const boon = {
+      id: `${id}-${i}`,
+    };
     if (i) {
       $('> td', tr).each((j, td) => {
         const className = $(td).attr('class');
@@ -74,6 +78,7 @@ async function parseGod(URL) {
     image,
     boons,
     icon,
+    id,
   };
 }
 
@@ -82,11 +87,15 @@ async function parseWeapon(URL) {
   const image = $('div.floatright img', page).attr('src');
   const aspectsAttrs = [];
   const aspects = [];
-  $('table#aspects th', page).each((i, attr) => {
+  const id = lowerCase(URL.substring(1, 4));
+  const tables = $('table.wikitable', page);
+  $('th', tables[1]).each((i, attr) => {
     aspectsAttrs.push(camelCase($(attr).text()));
   });
-  $('table#aspects > tbody > tr', page).each((i, tr) => {
-    const aspect = {};
+  $('tbody > tr', tables[1]).each((i, tr) => {
+    const aspect = {
+      id: `${id}-a-${i}`,
+    };
     if (i) {
       $('> td', tr).each((j, td) => {
         if (j) {
@@ -102,11 +111,13 @@ async function parseWeapon(URL) {
   });
   const upgradesAttrs = [];
   const upgrades = [];
-  $('table#hammers th', page).each((i, attr) => {
+  $('th', tables[3]).each((i, attr) => {
     upgradesAttrs.push(camelCase($(attr).text()));
   });
-  $('table#hammers > tbody > tr', page).each((i, tr) => {
-    const upgrade = {};
+  $('tbody > tr', tables[3]).each((i, tr) => {
+    const upgrade = {
+      id: `${id}-u-${i}`,
+    };
     if (i) {
       $('> td', tr).each((j, td) => {
         if (j) {
@@ -124,6 +135,7 @@ async function parseWeapon(URL) {
     image,
     aspects,
     upgrades,
+    id,
   };
 }
 
