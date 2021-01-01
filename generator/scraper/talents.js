@@ -10,21 +10,22 @@ async function parse() {
   const attrs = [];
   const page = await getPage(URL);
   $('table.wikitable th', page).each((i, attr) => {
-    const attrName = camelCase($(attr).text());
-    if (attrs.includes(`${attrName}Red`)) {
-      attrs.push(`${attrName}Green`);
-    } else {
-      attrs.push(`${attrName}Red`);
-    }
+    attrs.push(camelCase($(attr).text()));
   });
   $('table.wikitable tr', page).each((i, tr) => {
     const talent = {
       id: `t-${i}`,
+      red: {},
+      green: {},
     };
     if (i) {
       $('td', tr).each((j, td) => {
         removeLinkElement(td);
-        talent[attrs[j]] = $(td).html();
+        if (j < 4) {
+          talent.red[attrs[j]] = $(td).html();
+        } else {
+          talent.green[attrs[j]] = $(td).html();
+        }
       });
       talents.push(talent);
     }
