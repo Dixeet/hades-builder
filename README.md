@@ -3,9 +3,9 @@
 ## Generate data
 `/generator` folder contains every files to generate the data. Data is generated from scrapping [Hades Wiki](https://hades.gamepedia.com/Hades_Wiki)
 
-To generate, inside `generator` folder:
+To generate :
 ```bash
-node index.js
+node generator/index.js
 ```
 
 ## Build Setup
