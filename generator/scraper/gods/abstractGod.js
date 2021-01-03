@@ -2,14 +2,17 @@
 const $ = require('cheerio');
 const camelCase = require('lodash/camelCase');
 const lowerCase = require('lodash/lowerCase');
-const { getPage, removeLinkElement } = require('../abstractScraper');
+const { getPage, removeLinkElement, extractImage, findAndReplaceImages } = require('../abstractScraper');
 
 module.exports = async function parseGod(URL, standard = true) {
   const page = await getPage(URL);
-  const image = $('table.infobox-table td.infobox-centered img', page).attr('src');
+  const image = await extractImage($('table.infobox-table td.infobox-centered img', page)[0]);
   const boons = [];
   const id = lowerCase(URL.substring(1, 4));
-  $('table.wikitable.boonTableSB > tbody > tr', page).each((i, tr) => {
+  const trs = $('table.wikitable.boonTableSB > tbody > tr', page);
+  let i = -1;
+  for (const tr of trs) {
+    i += 1;
     if (i) {
       const boon = {
         id: `${id}-${i}`,
@@ -40,51 +43,57 @@ module.exports = async function parseGod(URL, standard = true) {
       } else {
         boon.type = 'other';
       }
-      $('> td', tr).each((j, td) => {
+      const tds = $('> td', tr);
+      for (const td of tds) {
         const className = $(td).attr('class');
         switch (className) {
           case 'boonTableName':
             boon.name = $('b', td).text();
-            boon.image = $('img', td).attr('src');
+            boon.image = await extractImage($('img', td)[0]);
             break;
           case 'boonTableDescription':
             removeLinkElement(td);
+            await findAndReplaceImages(td);
             boon.description = $(td).html();
             break;
           case 'boonTableNotes':
             removeLinkElement(td);
+            await findAndReplaceImages(td);
             boon.notes = $(td).html();
             break;
           case 'boonTablePrereqs':
             removeLinkElement(td);
+            await findAndReplaceImages(td);
             boon.prerequisites = $(td).html();
             break;
           default:
             if ($(td).find('table').length) {
               boon.rarity = {};
-              $(td)
-                .find('table')
-                .find('tr')
-                .each((k, ttr) => {
-                  let type = '';
-                  $('td', ttr).each((l, ttd) => {
-                    if (l === 0) {
-                      type = camelCase($(ttd).text().replace(':', ''));
-                    } else {
-                      boon.rarity[type] = $(ttd).text().replace('\n', '');
-                    }
-                  });
-                });
+              const ttrs = $(td).find('table').find('tr');
+              for (const ttr of ttrs) {
+                let type = '';
+                const ttds = $('td', ttr);
+                let l = -1;
+                for (const ttd of ttds) {
+                  l += 1;
+                  if (l === 0) {
+                    type = camelCase($(ttd).text().replace(':', ''));
+                  } else {
+                    boon.rarity[type] = $(ttd).text().replace('\n', '');
+                  }
+                }
+              }
             } else {
+              await findAndReplaceImages(td);
               removeLinkElement(td);
               boon.rarity = $(td).html();
             }
         }
-      });
+      }
       boons.push(boon);
     }
-  });
-  const icon = $('ul.gallery > li:nth-child(2) img', page).attr('src');
+  }
+  const icon = await extractImage($('ul.gallery > li:nth-child(2) img', page)[0]);
   return {
     image,
     boons,

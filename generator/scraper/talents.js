@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 const $ = require('cheerio');
 const camelCase = require('lodash/camelCase');
-const { getPage, removeLinkElement } = require('./abstractScraper');
+const { getPage, removeLinkElement, findAndReplaceImages } = require('./abstractScraper');
 
 const URL = '/Mirror_of_Night';
 
@@ -12,24 +12,31 @@ async function parse() {
   $('table.wikitable th', page).each((i, attr) => {
     attrs.push(camelCase($(attr).text()));
   });
-  $('table.wikitable tr', page).each((i, tr) => {
+  const trs = $('table.wikitable tr', page);
+  let i = -1;
+  for (const tr of trs) {
+    i += 1;
     const talent = {
       id: `t-${i}`,
       red: {},
       green: {},
     };
     if (i) {
-      $('td', tr).each((j, td) => {
+      const tds = $('td', tr);
+      let j = -1;
+      for (const td of tds) {
+        j += 1;
         removeLinkElement(td);
+        await findAndReplaceImages(td);
         if (j < 4) {
           talent.red[attrs[j]] = $(td).html();
         } else {
           talent.green[attrs[j]] = $(td).html();
         }
-      });
+      }
       talents.push(talent);
     }
-  });
+  }
 
   return talents;
 }
