@@ -23,7 +23,7 @@ $family-sans-serif: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI",
 $family-monospace: "Inconsolata", "Consolas", "Monaco", monospace;
 
 $radius-small: 3px;
-$radius: 0.4em;
+$radius: 0;
 $radius-large: 8px;
 $size-6: 15px;
 $size-7: 0.85em;
@@ -41,6 +41,7 @@ $background: $grey-darker;
 $footer-background-color: $background;
 $button-background-color: $background;
 $button-border-color: lighten($button-background-color, 15);
+$button-border-width: 1px;
 
 $title-color: #fff;
 $subtitle-color: $grey-light;
@@ -53,6 +54,7 @@ $text-strong: darken($text, 5);
 $box-color: $text;
 $box-background-color: $grey-dark;
 $box-shadow: none;
+$box-radius: 0;
 
 $link: $turquoise;
 $link-hover: lighten($link, 5);
