@@ -1,47 +1,28 @@
 <template>
   <section class="section">
     <div class="block">
-      <b-collapse class="card" animation="slide" :open="true">
-        <template #trigger="{ open }">
-          <div class="card-header" role="button">
-            <p class="card-header-title">Weapons</p>
-            <a class="card-header-icon">
-              <b-icon :icon="open ? 'menu-down' : 'menu-up'"> </b-icon>
-            </a>
-          </div>
-        </template>
-        <div class="card-content">
-          <Plus>
-            <List :list="Object.values(weapons)">
-              <template #default="{ element: weapon }">
-                <div @click="test">
-                  {{ weapon.name }}
-                </div>
-              </template>
-            </List>
-          </Plus>
-        </div>
-      </b-collapse>
+      <Card title="Weapon">
+        <Plus>
+          <List :list="Object.values(weapons)">
+            <template #default="{ element: weapon }">
+              <div @click="test">
+                {{ weapon.name }}
+              </div>
+            </template>
+          </List>
+        </Plus>
+      </Card>
     </div>
     <div class="block">
-      <b-collapse class="card" animation="slide" :open="false">
-        <template #trigger="{ open }">
-          <div class="card-header" role="button">
-            <p class="card-header-title">Mirror of Night Talents</p>
-            <a class="card-header-icon">
-              <b-icon :icon="open ? 'menu-down' : 'menu-up'"> </b-icon>
-            </a>
-          </div>
-        </template>
-        <div class="card-content">
-          <TalentsPicker :talents="talents" :talents-picked="build.talents" />
-        </div>
-      </b-collapse>
+      <Card title="Mirror of Night Talents" :open="false">
+        <TalentsPicker :talents="talents" :talents-picked="build.talents" />
+      </Card>
     </div>
   </section>
 </template>
 
 <script>
+import Card from '~/components/Card';
 import TalentsPicker from '../components/TalentsPicker';
 import Plus from '../components/Plus';
 import List from '../components/List';
@@ -50,6 +31,7 @@ export default {
   name: 'HomePage',
   components: {
     TalentsPicker,
+    Card,
     Plus,
     List,
   },
