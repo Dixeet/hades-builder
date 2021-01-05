@@ -4,7 +4,7 @@
       <b-icon icon="plus" size="is-medium"></b-icon>
     </div>
     <b-modal v-model="modalOpen">
-      <slot></slot>
+      <slot :close="close"></slot>
     </b-modal>
   </div>
 </template>
@@ -15,6 +15,11 @@ export default {
     return {
       modalOpen: false,
     };
+  },
+  methods: {
+    close() {
+      this.modalOpen = false;
+    },
   },
 };
 </script>

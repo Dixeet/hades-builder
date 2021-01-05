@@ -2,13 +2,11 @@
   <section class="section">
     <div class="block">
       <Card title="Weapon">
-        <Plus>
-          <List :list="Object.values(weapons)">
-            <template #default="{ element: weapon }">
-              <div @click="test">
-                {{ weapon.name }}
-              </div>
-            </template>
+        <Plus #default="{ close }">
+          <List #default="{ element: weapon }" class="columns is-multiline m-0" :list="Object.values(weapons)">
+            <div class="column is-3" @click="chooseWeapon(weapon, close)">
+              <WeaponElement :weapon="weapon"></WeaponElement>
+            </div>
           </List>
         </Plus>
       </Card>
@@ -26,10 +24,12 @@ import Card from '~/components/Card';
 import TalentsPicker from '../components/TalentsPicker';
 import Plus from '../components/Plus';
 import List from '../components/List';
+import WeaponElement from '~/components/WeaponElement';
 
 export default {
   name: 'HomePage',
   components: {
+    WeaponElement,
     TalentsPicker,
     Card,
     Plus,
@@ -38,6 +38,7 @@ export default {
   asyncData({ $data, query }) {
     const build = {
       talents: parseQueryTalents($data.talents, query),
+      weapon: null,
     };
     return {
       ...$data,
@@ -53,14 +54,16 @@ export default {
             talents.push([talent.id, talent.type === 'red' ? 0 : 1]);
           }
         });
-        this.$router.push({ query: { talents: JSON.stringify(talents) } });
+        this.$router.push({ query: { ...this.$route.query, talents: JSON.stringify(talents) } });
       },
       deep: true,
     },
   },
   methods: {
-    test() {
-      console.log(this.weapons);
+    chooseWeapon(weapon, close) {
+      this.build.weapon = weapon;
+      close();
+      this.$router.push({ query: { ...this.$route.query, weapon: weapon.id } });
     },
   },
 };
