@@ -1,9 +1,9 @@
 <template>
-  <ul>
-    <li v-for="(element, index) in list" :key="index">
+  <div>
+    <template v-for="element in list">
       <slot :element="element"></slot>
-    </li>
-  </ul>
+    </template>
+  </div>
 </template>
 
 <script>

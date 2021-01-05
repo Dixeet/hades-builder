@@ -3,11 +3,9 @@
     <div class="block">
       <Card title="Weapon">
         <Plus>
-          <List :list="Object.values(weapons)">
+          <List class="columns is-multiline m-0" :list="Object.values(weapons)">
             <template #default="{ element: weapon }">
-              <div @click="test">
-                {{ weapon.name }}
-              </div>
+              <WeaponElement class="column is-3" :weapon="weapon"></WeaponElement>
             </template>
           </List>
         </Plus>
@@ -26,10 +24,12 @@ import Card from '~/components/Card';
 import TalentsPicker from '../components/TalentsPicker';
 import Plus from '../components/Plus';
 import List from '../components/List';
+import WeaponElement from "~/components/WeaponElement";
 
 export default {
   name: 'HomePage',
   components: {
+    WeaponElement,
     TalentsPicker,
     Card,
     Plus,
