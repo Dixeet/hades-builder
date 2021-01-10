@@ -292,3 +292,8 @@ body > .navbar {
 .cursor-as-pointer {
   cursor: pointer;
 }
+
+.hoverable:hover {
+  border: 1px solid $grey-lighter !important;
+  color: $grey-light;
+}

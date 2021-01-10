@@ -1,18 +1,17 @@
 <template>
   <section class="section">
     <div class="block">
-      <Card title="Weapon">
-        <Plus #default="{ close }">
-          <List #default="{ element: weapon }" class="columns is-multiline m-0" :list="Object.values(weapons)">
-            <div class="column is-3" @click="chooseWeapon(weapon, close)">
-              <WeaponElement :weapon="weapon"></WeaponElement>
-            </div>
-          </List>
-        </Plus>
-      </Card>
+      <h2 class="title is-4">Weapon</h2>
+      <Weapon
+        :weapons="weapons"
+        :weapon-picked="build.weapon"
+        @delete-weapon="deleteWeapon"
+        @choose-weapon="chooseWeapon"
+      ></Weapon>
     </div>
     <div class="block">
-      <Card title="Mirror of Night Talents" :open="false">
+      <h2 class="title is-4">Talents</h2>
+      <Card title="Mirror of Night" :open="false">
         <TalentsPicker :talents="talents" :talents-picked="build.talents" />
       </Card>
     </div>
@@ -21,24 +20,20 @@
 
 <script>
 import Card from '~/components/Card';
-import TalentsPicker from '../components/TalentsPicker';
-import Plus from '../components/Plus';
-import List from '../components/List';
-import WeaponElement from '~/components/WeaponElement';
+import TalentsPicker from '~/components/TalentsPicker';
+import Weapon from '~/components/Weapon';
 
 export default {
   name: 'HomePage',
   components: {
-    WeaponElement,
     TalentsPicker,
     Card,
-    Plus,
-    List,
+    Weapon,
   },
   asyncData({ $data, query }) {
     const build = {
       talents: parseQueryTalents($data.talents, query),
-      weapon: null,
+      weapon: parseQueryWeapon($data.weapons, query),
     };
     return {
       ...$data,
@@ -60,10 +55,15 @@ export default {
     },
   },
   methods: {
-    chooseWeapon(weapon, close) {
+    chooseWeapon(weapon) {
       this.build.weapon = weapon;
-      close();
       this.$router.push({ query: { ...this.$route.query, weapon: weapon.id } });
+    },
+    deleteWeapon() {
+      this.build.weapon = {};
+      const query = { ...this.$route.query };
+      delete query.weapon;
+      this.$router.push({ query });
     },
   },
 };
@@ -87,5 +87,23 @@ function parseQueryTalents(talents, query) {
     });
   }
   return buildTalents;
+}
+
+function parseQueryWeapon(weapons, query) {
+  if (query.weapon) {
+    const weapon = weapons.find((weap) => weap.id === query.weapon) || {};
+    if (weapon.id && query.aspect) {
+      const aspect = weapon.aspects.find((asp) => asp.id === query.aspect);
+      if (aspect) {
+        weapon.aspectPicked = aspect;
+      } else {
+        const queryCopy = { ...this.$route.query };
+        delete queryCopy.aspect;
+        this.$router.push({ query: queryCopy });
+      }
+    }
+    return weapon;
+  }
+  return {};
 }
 </script>

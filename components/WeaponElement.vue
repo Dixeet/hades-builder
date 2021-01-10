@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="card cursor-as-pointer">
+    <div class="card cursor-as-pointer hoverable">
       <div class="card-image">
         <img :src="weapon.image" :alt="weapon.name" />
       </div>
@@ -30,9 +30,5 @@ img {
   max-height: 150px;
   display: block;
   margin: 0 auto;
-}
-.card:hover {
-  border: 1px solid $grey-lighter;
-  color: $grey-light;
 }
 </style>
