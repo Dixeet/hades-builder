@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="h-plus cursor-as-pointer" @click="modalOpen = !modalOpen">
+    <div class="h-plus cursor-as-pointer mb-4" @click="modalOpen = !modalOpen">
       <b-icon icon="plus" size="is-medium"></b-icon>
     </div>
     <b-modal v-model="modalOpen">
@@ -28,7 +28,7 @@ export default {
 @import '~/assets/css/_variables';
 
 .h-plus {
-  width: 80px;
+  //width: 80px;
   height: 80px;
   text-align: center;
   border: 3px dashed $border;

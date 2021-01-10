@@ -56,11 +56,11 @@ export default {
   },
   methods: {
     chooseWeapon(weapon) {
-      this.build.weapon = weapon;
+      this.build.weapon = { ...weapon, bestUpgrades: [], goodUpgrades: [] };
       this.$router.push({ query: { ...this.$route.query, weapon: weapon.id } });
     },
     deleteWeapon() {
-      this.build.weapon = {};
+      this.build.weapon = { bestUpgrades: [], goodUpgrades: [] };
       const query = { ...this.$route.query };
       delete query.weapon;
       this.$router.push({ query });
@@ -92,6 +92,8 @@ function parseQueryTalents(talents, query) {
 function parseQueryWeapon(weapons, query) {
   if (query.weapon) {
     const weapon = weapons.find((weap) => weap.id === query.weapon) || {};
+    weapon.bestUpgrades = [];
+    weapon.goodUpgrades = [];
     if (weapon.id && query.aspect) {
       const aspect = weapon.aspects.find((asp) => asp.id === query.aspect);
       if (aspect) {
@@ -101,6 +103,24 @@ function parseQueryWeapon(weapons, query) {
         delete queryCopy.aspect;
         this.$router.push({ query: queryCopy });
       }
+    }
+    if (weapon.id && query.bestUpgrades) {
+      const queryBestUpgrades = JSON.parse(query.bestUpgrades);
+      queryBestUpgrades.forEach((upgrade) => {
+        const upgradeFound = weapon.upgrades.find((upg) => upg.id === upgrade);
+        if (upgradeFound) {
+          weapon.bestUpgrades.push(upgradeFound);
+        }
+      });
+    }
+    if (weapon.id && query.goodUpgrades) {
+      const queryGoodUpgrades = JSON.parse(query.goodUpgrades);
+      queryGoodUpgrades.forEach((upgrade) => {
+        const upgradeFound = weapon.upgrades.find((upg) => upg.id === upgrade);
+        if (upgradeFound) {
+          weapon.goodUpgrades.push(upgradeFound);
+        }
+      });
     }
     return weapon;
   }

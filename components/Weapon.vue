@@ -19,6 +19,41 @@
       <div v-else>
         <AspectElement is-closable :aspect="weaponPicked.aspectPicked" @delete-aspect="deleteAspect"></AspectElement>
       </div>
+      <h3 class="subtitle">Daedalus Hammer Upgrades</h3>
+      <div>
+        <h4 class="subtitle is-6">Best</h4>
+        <List #default="{ element: upgrade, index }" :list="weaponPicked.bestUpgrades">
+          <UpgradeElement
+            is-closable
+            :upgrade="upgrade"
+            @delete-upgrade="deleteUpgrade('bestUpgrades', index)"
+          ></UpgradeElement>
+        </List>
+        <Plus v-if="weaponPicked.bestUpgrades.length < 2" #default="{ close }">
+          <List #default="{ element: upgrade }" :list="updatedUpgradesList">
+            <div @click="chooseUpgrade(upgrade, 'bestUpgrades', close)">
+              <UpgradeElement :upgrade="upgrade"></UpgradeElement>
+            </div>
+          </List>
+        </Plus>
+      </div>
+      <div>
+        <h4 class="subtitle is-6">Good</h4>
+        <List #default="{ element: upgrade, index }" :list="weaponPicked.goodUpgrades">
+          <UpgradeElement
+            is-closable
+            :upgrade="upgrade"
+            @delete-upgrade="deleteUpgrade('goodUpgrades', index)"
+          ></UpgradeElement>
+        </List>
+        <Plus #default="{ close }">
+          <List #default="{ element: upgrade }" :list="updatedUpgradesList">
+            <div @click="chooseUpgrade(upgrade, 'goodUpgrades', close)">
+              <UpgradeElement :upgrade="upgrade"></UpgradeElement>
+            </div>
+          </List>
+        </Plus>
+      </div>
     </Card>
   </div>
 </template>
@@ -29,6 +64,7 @@ import Card from '~/components/Card';
 import List from '~/components/List';
 import WeaponElement from '~/components/WeaponElement';
 import AspectElement from '~/components/AspectElement';
+import UpgradeElement from '~/components/UpgradeElement';
 
 export default {
   components: {
@@ -37,6 +73,7 @@ export default {
     List,
     WeaponElement,
     AspectElement,
+    UpgradeElement,
   },
   props: {
     weapons: {
@@ -46,6 +83,15 @@ export default {
     weaponPicked: {
       type: Object,
       required: true,
+    },
+  },
+  computed: {
+    updatedUpgradesList() {
+      return this.weaponPicked.upgrades.filter(
+        (upgrade) =>
+          !this.weaponPicked.bestUpgrades.find((upg) => upg.id === upgrade.id) &&
+          !this.weaponPicked.goodUpgrades.find((upg) => upg.id === upgrade.id),
+      );
     },
   },
   methods: {
@@ -63,6 +109,24 @@ export default {
       this.$set(this.weaponPicked, 'aspectPicked', undefined);
       const query = { ...this.$route.query };
       delete query.aspect;
+      this.$router.push({ query });
+    },
+    chooseUpgrade(upgrade, attr, close) {
+      close();
+      this.weaponPicked[attr].push(upgrade);
+      this.updateQueryUpgrade(attr);
+    },
+    deleteUpgrade(attr, index) {
+      this.weaponPicked[attr].splice(index, 1);
+      this.updateQueryUpgrade(attr);
+    },
+    updateQueryUpgrade(attr) {
+      const query = { ...this.$route.query };
+      if (!this.weaponPicked[attr].length && this.weaponPicked[attr]) {
+        delete query[attr];
+      } else {
+        query[attr] = JSON.stringify(this.weaponPicked[attr].map((upgr) => upgr.id));
+      }
       this.$router.push({ query });
     },
   },

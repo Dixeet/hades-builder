@@ -1,7 +1,7 @@
 <template>
   <div>
-    <template v-for="element in list">
-      <slot :element="element"></slot>
+    <template v-for="(element, index) in list">
+      <slot :element="element" :index="index"></slot>
     </template>
   </div>
 </template>

@@ -5,18 +5,21 @@
       :class="{ hoverable: !isClosable, 'cursor-as-pointer': !isClosable }"
     >
       <div class="column is-narrow has-text-centered">
-        <img :src="aspect.image" :alt="aspect.name" />
+        <img :src="upgrade.image" :alt="upgrade.name" />
+      </div>
+      <div class="column has-text-centered is-narrow h-name">
+        {{ upgrade.name }}
       </div>
       <div class="column has-text-centered">
-        {{ aspect.name }}
+        <div v-html="upgrade.description"></div>
       </div>
-      <div class="column has-text-centered">
-        <div v-html="aspect.upgrade"></div>
+      <div v-if="upgrade.notes" class="column has-text-centered">
+        <div v-html="upgrade.notes"></div>
       </div>
       <div
         v-if="isClosable"
         class="column is-narrow has-text-centered cursor-as-pointer h-closable"
-        @click="$emit('delete-aspect')"
+        @click="$emit('delete-upgrade')"
       >
         <b-icon icon="close"></b-icon>
       </div>
@@ -27,7 +30,7 @@
 <script>
 export default {
   props: {
-    aspect: {
+    upgrade: {
       type: Object,
       required: true,
     },
