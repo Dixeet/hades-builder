@@ -10,11 +10,12 @@ module.exports = async function parseWeapon(URL) {
   const aspectsAttrs = [];
   const aspects = [];
   const id = lowerCase(URL.substring(1, 4));
+  const startingTableIndex = id === 'ete' ? 1 : 0;
   const tables = $('table.wikitable', page);
-  $('th', tables[1]).each((i, attr) => {
+  $('th', tables[startingTableIndex + 1]).each((i, attr) => {
     aspectsAttrs.push(camelCase($(attr).text()));
   });
-  const trs = $('tbody > tr', tables[1]);
+  const trs = $('tbody > tr', tables[startingTableIndex + 1]);
   let ii = -1;
   for (const tr of trs) {
     ii += 1;
@@ -40,10 +41,10 @@ module.exports = async function parseWeapon(URL) {
   }
   const upgradesAttrs = [];
   const upgrades = [];
-  $('th', tables[3]).each((i, attr) => {
+  $('th', tables[startingTableIndex + 3]).each((i, attr) => {
     upgradesAttrs.push(camelCase($(attr).text()));
   });
-  const utrs = $('tbody > tr', tables[3]);
+  const utrs = $('tbody > tr', tables[startingTableIndex + 3]);
   let ui = -1;
   for (const tr of utrs) {
     ui += 1;

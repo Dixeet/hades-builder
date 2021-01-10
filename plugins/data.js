@@ -18,26 +18,8 @@ import talents from '~/data/talents';
 
 export default function fn(ctx, inject) {
   const data = {
-    gods: {
-      aphrodite,
-      ares,
-      artemis,
-      athena,
-      chaos,
-      demeter,
-      dionysus,
-      hermes,
-      poseidon,
-      zeus,
-    },
-    weapons: {
-      adamantRail,
-      eternalSpear,
-      hearSeekingBow,
-      shieldOfChaos,
-      stygianBlade,
-      twinFists,
-    },
+    gods: [aphrodite, ares, artemis, athena, chaos, demeter, dionysus, hermes, poseidon, zeus],
+    weapons: [adamantRail, eternalSpear, hearSeekingBow, shieldOfChaos, stygianBlade, twinFists],
     talents,
   };
   inject('data', data);
