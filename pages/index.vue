@@ -7,7 +7,11 @@
         :weapon-picked="build.weapon"
         @delete-weapon="deleteWeapon"
         @choose-weapon="chooseWeapon"
-      ></Weapon>
+      />
+    </div>
+    <div class="block">
+      <h2 class="title is-4">Gods and Boons</h2>
+      <Boons :gods="gods" />
     </div>
     <div class="block">
       <h2 class="title is-4">Talents</h2>
@@ -22,6 +26,7 @@
 import Card from '~/components/Card';
 import TalentsPicker from '~/components/TalentsPicker';
 import Weapon from '~/components/Weapon';
+import Boons from '~/components/Boons';
 
 export default {
   name: 'HomePage',
@@ -29,6 +34,7 @@ export default {
     TalentsPicker,
     Card,
     Weapon,
+    Boons,
   },
   asyncData({ $data, query }) {
     const build = {
